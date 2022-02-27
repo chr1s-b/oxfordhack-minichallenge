@@ -19,7 +19,7 @@ def rate_business(business):
 
     business_data["knowledge_base"] = googleknowledgebase(business)
     business_data["vicinity_attention"] = compareRatings(business)
-
+    score = 0
     # get social media if website exists
     if business_data["contacts"]["website"]:
         url = business_data["contacts"]["website"]
@@ -28,17 +28,22 @@ def rate_business(business):
         twitter = hasTwitter(url)
         if insta:
             business_data["contacts"]["instagram"] = insta
+            score+=weights['contacts']['instagram']
+        print("found insta")
         if fb:
             business_data["contacts"]["facebook"] = fb
+            score+=weights['contacts']['facebook']
+        print("found fb")
         if twitter:
             business_data["contacts"]["twitter"] = twitter
+            score+=weights['contacts']['twitter']
     
     # assign score based on weights
-    score = 0
-
+    score += weights['vicinity_attention']*business_data["vicinity_attention"]
+    score+=weights['knowledge_base']*business_data['knowledge_base']
     
-
-    return 5., {}
+    print(score)
+    return score,business_data
 
 ratings = []
 

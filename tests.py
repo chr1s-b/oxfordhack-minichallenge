@@ -45,7 +45,7 @@ def gmapspresence(business):
     place = gmapsplaceid_(business)
     details = gmaps.place(place)["result"]
     # from these details we can get
-    results = {}
+    results = {'contacts':{}}
     if details["rating"]:
         results["avg_rating"] = details["rating"]
     if details["website"]:
@@ -128,52 +128,58 @@ def getFacebook(url):
     #Look for 
     #https://www.facebook.com/ ... "
     data = requests.get(url).text
-    urlSize = len('https://facebook.com/')
-    index = data.index('https://facebook.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
-        data = requests.get(url).text
+    if('https://facebook.com/' in data):
+        urlSize = len('https://facebook.com/')
+        index = data.index('https://facebook.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
+            data = requests.get(url).text
     #look again for https://www. 
-    urlSize = len('https://www.facebook.com/')
-    index = data.index('https://www.facebook.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
+    if("https://www.facebook.com/" in data):
+        urlSize = len('https://www.facebook.com/')
+        index = data.index('https://www.facebook.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
 
 def getTwitter(url):
     #Look for 
     #https://twitter.com/ ... "
     data = requests.get(url).text
-    urlSize = len('https://twitter.com/')
-    index = data.index('https://twitter.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
-
-    #look again in case they use https://www.twitter.com
-    urlSize = len('https://www.twitter.com/')
-    index = data.index('https://www.twitter.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
+    if('https://twitter.com/' in data):
+        urlSize = len('https://twitter.com/')
+        index = data.index('https://twitter.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
+    #look again for https://www. 
+    if("https://www.twitter.com/" in data):
+        urlSize = len('https://www.twitter.com/')
+        index = data.index('https://www.twitter.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
 
 def getInstagram(url):
     #Look for 
     #https://instagram.com/ ... "
     data = requests.get(url).text
-    urlSize = len('https://instagram.com/')
-    index = data.index('https://instagram.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
+    if('https://instagram.com/' in data):
+        urlSize = len('https://instagram.com/')
+        index = data.index('https://instagram.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
+            data = requests.get(url).text
+    #look again for https://www. 
+    if("https://www.instagram.com/" in data):
+        urlSize = len('https://www.instagram.com/')
+        index = data.index('https://www.instagram.com/')
+        for i in range(index+urlSize,len(data)):
+            if(data[i]=="'" or data[i]=='"'):
+                return data[index:i]
 
-    #look again in case they use https://www.instagram.com
-    urlSize = len('https://www.instagram.com/')
-    index = data.index('https://www.instagram.com/')
-    for i in range(index+urlSize,len(data)):
-        if(data[i]=="'" or data[i]=='"'):
-            return data[index:i]
 
     #Interacting With Social Media
 
