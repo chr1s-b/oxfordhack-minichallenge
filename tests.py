@@ -18,6 +18,7 @@ gmaps = googlemaps.Client(key=API_KEY)
 
 
 def mobilecompatibility(url):
+    global API_KEY
     """uses google mobile support checker webpage to see if the webpage has mobile support """
     apiUrl = 'https://searchconsole.googleapis.com/v1/urlTestingTools/mobileFriendlyTest:run'
     params = {
@@ -39,6 +40,8 @@ def gmapsplaceid_(business):
     places = gmaps.find_place(input=name+" "+address, input_type="textquery")["candidates"]
     # assume we take the first result
     if len(places) > 1: print("[WARN] More than one result for google listings, assuming first")
+    if len(places) == 0:
+        places = gmaps.find_place(input=address, input_type="textquery")["candidates"]
     return places[0]["place_id"]
 
 def gmapspresence(business):
@@ -46,13 +49,13 @@ def gmapspresence(business):
     details = gmaps.place(place)["result"]
     # from these details we can get
     results = {'contacts':{}}
-    if details["rating"]:
+    if "rating" in details:
         results["avg_rating"] = details["rating"]
-    if details["website"]:
+    if "website" in details:
         results["contacts"]["website"] = details["website"]
-    if details["formatted_phone_number"]:
+    if "formatted_phone_number" in details:
         results["contacts"]["phone_number"] = details["formatted_phone_number"]
-    if details["user_ratings_total"]:
+    if "user_ratings_total" in details:
         results["user_ratings_total"] = details["user_ratings_total"]
     return results
 
@@ -70,8 +73,10 @@ def googleknowledgebase(business):
     result = res["itemListElement"][0] if res["itemListElement"] else {}
     if not result: return 0
     
-    similarity = fuzz.ratio(business["name"], result["result"]["name"])
-    return similarity if similarity > 90 else 0
+    similarity = fuzz.token_sort_ratio(business["name"], result["result"]["name"])
+    print(similarity)
+    print(business["name"].lower(), result["result"]["name"].lower())
+    return (similarity/100.0) if similarity > 70 else 0
 
 def getTotalRatings(lat,lng):
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+str(lat)+"%2C"+str(lng)+"&radius=2000&key="+API_KEY
@@ -91,7 +96,7 @@ def compareRatings(business):
     """Returns the what portion of all the nearby reviews (radius=2000m) belong to the business"""
     place = gmapsplaceid_(business)
     details = gmaps.place(place)
-    print(details)
+    #print(details)
     lng = details['result']['geometry']['location']['lng']
     lat = details['result']['geometry']['location']['lat']
 
@@ -134,7 +139,6 @@ def getFacebook(url):
         for i in range(index+urlSize,len(data)):
             if(data[i]=="'" or data[i]=='"'):
                 return data[index:i]
-            data = requests.get(url).text
     #look again for https://www. 
     if("https://www.facebook.com/" in data):
         urlSize = len('https://www.facebook.com/')
@@ -171,7 +175,6 @@ def getInstagram(url):
         for i in range(index+urlSize,len(data)):
             if(data[i]=="'" or data[i]=='"'):
                 return data[index:i]
-            data = requests.get(url).text
     #look again for https://www. 
     if("https://www.instagram.com/" in data):
         urlSize = len('https://www.instagram.com/')

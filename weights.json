@@ -1,13 +1,14 @@
 {
     "vicinity_attention": 1.0,
-    "knowledge_base": 3.0,
-    "avg_rating": 2.0,
+    "knowledge_base": 2,
+    "avg_rating": 1.5,
     "user_ratings_total": 1.0,
     "contacts": {
         "facebook": 1.0,
         "instagram": 1.0,
         "twitter": 0.5,
-        "website": 2.0,
-        "phone_number": 1.0
+        "website": 1.0,
+        "mobile_compatible":0.5,
+        "phone_number": 0.5
     }
 }
