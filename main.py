@@ -8,19 +8,20 @@ businesses = json.loads(contents)
 
 def rate_business(business):
     '''Given a name and address of a business, returns a rating between 0.0 and 10.0 and the details that compose the rating'''
-    #gmaps_score, gmaps_data = gmapspresence(business)
+    gmapspresence_data = gmapspresence(business)
     googleknowledgebase(business)
 
     return 5., {}
 
-ratings = {}
+ratings = []
 
 for b in businesses[:1]: # TEMPORARY test on one business
     name = b["name"]
     print(f"Rating {name}...",end=' ')
     rating, details = rate_business(b)
-    ratings[name] = {'rating': rating,
-                     'details': details}
+    ratings.append({'name':     name,
+                    'rating':   rating,
+                    'details':  details})
     print(rating)
 
 # write data to a file

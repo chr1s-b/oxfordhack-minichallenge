@@ -8,16 +8,14 @@ from fuzzywuzzy import fuzz
 import re
 from datetime import datetime
 
+# load weights
+weights = {}
+with open("weights.json", 'r') as f:
+    weights = json.loads(f.read())
+
 # load in api key for Google Places API
-
-
-
 load_dotenv()
 API_KEY = os.environ.get("API_KEY")
-
-
-
-
 print(f"Loaded Google Places API key {API_KEY}")
 
 gmaps = googlemaps.Client(key=API_KEY)
@@ -49,14 +47,18 @@ def gmapsplaceid_(business):
 
 def gmapspresence(business):
     place = gmapsplaceid_(business)
-    print()
     details = gmaps.place(place)["result"]
     # from these details we can get
-    googlerating = details["rating"]
-    website = details["website"]
-    phonenumber = details["formatted_phone_number"]
-    numofratings = details["user_ratings_total"]
-    return 0,{}
+    results = {}
+    if details["rating"]:
+        results["avgRating"] = details["rating"]
+    if details["website"]:
+        results["website"] = details["website"]
+    if details["formatted_phone_number"]:
+        results["phone_number"] = details["formatted_phone_number"]
+    if details["user_ratings_total"]:
+        results["user_ratings_total"] = details["user_ratings_total"]
+    return results
 
 def googleknowledgebase(business):
     endpoint = "https://kgsearch.googleapis.com/v1/entities:search"
@@ -149,4 +151,3 @@ def getInstagramFollowers(igURL):
     followers = re.search('"edge_followed_by":{"count":([0-9]+)}',r).group(1)
 
     print(followers)
->>>>>>> 62c82b1e1b5fcbfecae3991bc563c5878d39bfb7

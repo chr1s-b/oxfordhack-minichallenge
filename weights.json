@@ -1,0 +1,13 @@
+{
+    "vicinityAttention": 1.0,
+    "knowledgeBase": 3.0,
+    "avgRating": 2.0,
+    "numReviews": 1.0,
+    "contacts": {
+        "facebook": 1.0,
+        "instagram": 1.0,
+        "twitter": 0.5,
+        "website": 2.0,
+        "phone_number": 1.0
+    }
+}
