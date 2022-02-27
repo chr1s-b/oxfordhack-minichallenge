@@ -6,7 +6,11 @@ Fork this repostory and fill out your details below:
 
 ## Your details
 
-- Name:
-- Email:
-- LinkedIn:
+- Name: Chris Boddy
+- Email: cwb21@ic.ac.uk
+- LinkedIn: https://www.linkedin.com/in/christopher-boddy/
 
+
+- Name: Leo Harford
+- Email: lah95@bath.ac.uk
+- LinkedIn: https://www.linkedin.com/in/leo-harford/
