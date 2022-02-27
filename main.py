@@ -1,12 +1,5 @@
 import json
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-API_KEY = os.environ.get("API_KEY")
-
-print(f"Loaded api key {API_KEY}")
+from tests import *
 
 with open("input-alt.json", 'r') as f:
     contents = f.read()
@@ -14,12 +7,14 @@ with open("input-alt.json", 'r') as f:
 businesses = json.loads(contents)
 
 def rate_business(business):
-    
+    '''Given a name and address of a business, returns a rating between 0.0 and 10.0 and the details that compose the rating'''
+    gmaps_score, gmaps_data = gmapspresence(business)
+
     return 5., {}
 
 ratings = {}
 
-for b in businesses:
+for b in businesses[:1]:
     name = b["name"]
     print(f"Rating {name}...",end=' ')
     rating, details = rate_business(b)
