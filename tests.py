@@ -22,6 +22,8 @@ print(f"Loaded Google Places API key {API_KEY}")
 
 gmaps = googlemaps.Client(key=API_KEY)
 
+
+
 def mobilecompatibility(url):
     global API_KEY;
     """uses google mobile support checker webpage to see if the webpage has mobile support """
@@ -75,19 +77,55 @@ def googleknowledgebase(business):
     similarity = fuzz.ratio(business["name"], result["result"]["name"])
     return similarity if similarity > 90 else 0
 
+def getTotalRatings(lat,lng):
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+str(lat)+"%2C"+str(lng)+"&radius=2000&key="+API_KEY
+
+    payload={}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    totalratings = 0
+    for y in json.loads(response.text)['results']:
+        if('user_ratings_total' in y):
+            totalratings+=y['user_ratings_total']
+    return totalratings
+
+def compareRatings(business):
+    """Returns the what portion of all the nearby reviews (radius=2000m) belong to the business"""
+    place = gmapsplaceid_(business)
+    details = gmaps.place(place)
+    print(details)
+    lng = details['result']['geometry']['location']['lng']
+    lat = details['result']['geometry']['location']['lat']
+
+    if('user_ratings_total' in details['result']):
+        return details['result']['user_ratings_total']/ getTotalRatings(lat,lng)
+
+
+
 #Social Media Checks
 
 def hasFacebook(url):
     data = requests.get(url)
-    return ("facebook" in data.text.lower())
-
+    if("facebook" in data.text.lower()):
+        return getFacebook(url)
+    else:
+        return None
+        
 def hasTwitter(url):
     data = requests.get(url)
-    return ("twitter" in data.text.lower())
+    if("twitter" in data.text.lower()):
+        return getTwitter(url)
+    else:
+        return None
 
 def hasInstagram(url):
     data = requests.get(url)
-    return ("isntagram" in data.text.lower())
+    if("instagram" in data.text.lower()):
+        return getInstagram(url)
+    else:
+        return None
 
 #Get social media urls
 def getFacebook(url):
@@ -149,4 +187,5 @@ def getInstagramFollowers(igURL):
     followers = re.search('"edge_followed_by":{"count":([0-9]+)}',r).group(1)
 
     print(followers)
->>>>>>> 62c82b1e1b5fcbfecae3991bc563c5878d39bfb7
+
+
