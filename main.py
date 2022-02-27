@@ -8,7 +8,8 @@ businesses = json.loads(contents)
 
 def rate_business(business):
     '''Given a name and address of a business, returns a rating between 0.0 and 10.0 and the details that compose the rating'''
-    gmaps_score, gmaps_data = gmapspresence(business)
+    #gmaps_score, gmaps_data = gmapspresence(business)
+    googleknowledgebase(business)
 
     return 5., {}
 
