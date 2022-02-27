@@ -18,16 +18,17 @@ def mobilecompatibility(url):
     params = {
             'url': url,
             'requestScreenshot': 'false',
-            'key': "AIzaSyB4hW39-INaUINhqCeaRXkMx87KJGCAYIY"
+            'key': API_KEY
         }
 
     x = requests.post(apiUrl, data = params)
     data = json.loads(x.text)
     if(data['test_status'] == {'status': 'COMPLETE'}):
         return data['mobileFriendliness'] == 'MOBILE_FRIENDLY'
-    return false
+    return False
 
-
+print(mobilecompatibility("https://hotmail.co.uk"))
+print(mobilecompatibility("ayqwq"))
 
 def gmapspresence(business):
     name = business["name"]
