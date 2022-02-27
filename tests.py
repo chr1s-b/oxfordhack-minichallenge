@@ -23,8 +23,9 @@ def mobilecompatibility(url):
 
     x = requests.post(apiUrl, data = params)
     data = json.loads(x.text)
-    print(data['test_status'] == {'status': 'COMPLETE'})
-    return data['mobileFriendliness'] == 'MOBILE_FRIENDLY'
+    if(data['test_status'] == {'status': 'COMPLETE'}):
+        return data['mobileFriendliness'] == 'MOBILE_FRIENDLY'
+    return false
 
 
 
