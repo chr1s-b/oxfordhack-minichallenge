@@ -1,4 +1,12 @@
 import json
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.environ.get("API_KEY")
+
+print(f"Loaded api key {API_KEY}")
 
 with open("input-alt.json", 'r') as f:
     contents = f.read()
