@@ -8,11 +8,6 @@ from fuzzywuzzy import fuzz
 import re
 from datetime import datetime
 
-# load weights
-weights = {}
-with open("weights.json", 'r') as f:
-    weights = json.loads(f.read())
-
 # load in api key for Google Places API
 load_dotenv()
 API_KEY = os.environ.get("API_KEY")
@@ -52,11 +47,11 @@ def gmapspresence(business):
     # from these details we can get
     results = {}
     if details["rating"]:
-        results["avgRating"] = details["rating"]
+        results["avg_rating"] = details["rating"]
     if details["website"]:
-        results["website"] = details["website"]
+        results["contacts"]["website"] = details["website"]
     if details["formatted_phone_number"]:
-        results["phone_number"] = details["formatted_phone_number"]
+        results["contacts"]["phone_number"] = details["formatted_phone_number"]
     if details["user_ratings_total"]:
         results["user_ratings_total"] = details["user_ratings_total"]
     return results
