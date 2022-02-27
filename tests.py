@@ -17,6 +17,9 @@ def mobilecompatibility(url):
 def gmapspresence(business):
     name = business["name"]
     address = business["address"]
-    place = gmaps.find_place(input=address, input_type="textquery")
+    places = gmaps.find_place(input=name+" "+address, input_type="textquery")
+    # assume we take the first result
+    place = places[0]
+    print()
     print(place)
     return 0,{}
