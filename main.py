@@ -14,10 +14,17 @@ def rate_business(business):
 
 ratings = {}
 
-for b in businesses[:1]:
+for b in businesses[:1]: # TEMPORARY test on one business
     name = b["name"]
     print(f"Rating {name}...",end=' ')
     rating, details = rate_business(b)
     ratings[name] = {'rating': rating,
                      'details': details}
     print(rating)
+
+# write data to a file
+json_string = json.dumps(ratings)
+print("Writing data to business_ratings.json... ",end='')
+with open('business_ratings.json', 'w') as f:
+    f.write(json_string)
+print("done")
